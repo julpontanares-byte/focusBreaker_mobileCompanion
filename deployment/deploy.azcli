@@ -1,6 +1,11 @@
 #!/usr/bin/env bash
+<<<<<<< HEAD
 # Complete Azure CLI deployment script for focusBreaker
 # This script creates all Azure resources and deploys the database schema
+=======
+# Minimal Azure CLI deployment scaffold for focusBreaker
+# WARNING: This is a scaffold. Review and run step-by-step.
+>>>>>>> origin/main
 
 set -euo pipefail
 
@@ -9,6 +14,7 @@ if [ -f deployment/parameters.env ]; then
   source deployment/parameters.env
 fi
 
+<<<<<<< HEAD
 # Set defaults with random suffixes for uniqueness
 : ${RG_NAME:=$(echo ${RG_NAME:-rg-focusbreaker})}
 : ${LOCATION:=${LOCATION:-southeastasia}}
@@ -23,6 +29,17 @@ fi
 if [ -z "${AZ_SQL_ADMIN_PASSWORD:-}" ]; then
   echo "Please set AZ_SQL_ADMIN_PASSWORD environment variable with a strong password."
   echo "Example: export AZ_SQL_ADMIN_PASSWORD='YourStrongPassword123!'"
+=======
+: ${RG_NAME:=$(echo ${RG_NAME:-rg-focusbreaker})}
+: ${LOCATION:=${LOCATION:-eastus}}
+: ${APP_NAME:=${APP_NAME:-fb-web}}
+: ${STORAGE_NAME:=${STORAGE_NAME:-fbstorage$RANDOM}}
+: ${SQL_SERVER_NAME:=${SQL_SERVER_NAME:-fbsqlserver$RANDOM}}
+: ${SQL_DB_NAME:=${SQL_DB_NAME:-fbsqldb}}
+
+if [ -z "${AZ_SQL_ADMIN_PASSWORD:-}" ]; then
+  echo "Please set AZ_SQL_ADMIN_PASSWORD environment variable with a strong password (or use Key Vault)."
+>>>>>>> origin/main
   exit 1
 fi
 
@@ -30,12 +47,17 @@ echo "Creating resource group $RG_NAME in $LOCATION"
 az group create -n "$RG_NAME" -l "$LOCATION"
 
 echo "Creating storage account $STORAGE_NAME"
+<<<<<<< HEAD
 az storage account create -n "$STORAGE_NAME" -g "$RG_NAME" -l "$LOCATION" --sku Standard_LRS --allow-blob-public-access false --https-only true
+=======
+az storage account create -n "$STORAGE_NAME" -g "$RG_NAME" -l "$LOCATION" --sku Standard_LRS
+>>>>>>> origin/main
 
 echo "Creating App Service plan"
 az appservice plan create -g "$RG_NAME" -n "${APP_NAME}-plan" --sku B1 --is-linux
 
 echo "Creating Web App"
+<<<<<<< HEAD
 az webapp create -g "$RG_NAME" -p "${APP_NAME}-plan" -n "$APP_NAME" --runtime "NODE|20-lts"
 
 echo "Creating Application Insights"
@@ -43,10 +65,20 @@ az monitor app-insights component create --app "$APP_INSIGHTS_NAME" -g "$RG_NAME
 
 echo "Creating SQL server $SQL_SERVER_NAME"
 az sql server create -g "$RG_NAME" -n "$SQL_SERVER_NAME" --location "$LOCATION" --admin-user "$SQL_ADMIN" --admin-password "$AZ_SQL_ADMIN_PASSWORD" --enable-public-network true
+=======
+az webapp create -g "$RG_NAME" -p "${APP_NAME}-plan" -n "$APP_NAME" --runtime "NODE|18-lts"
+
+echo "Creating Application Insights"
+az monitor app-insights component create --app "$APP_NAME-ai" -g "$RG_NAME" -l "$LOCATION" --application-type web
+
+echo "Creating SQL server $SQL_SERVER_NAME"
+az sql server create -g "$RG_NAME" -n "$SQL_SERVER_NAME" --location "$LOCATION" --admin-user "$SQL_ADMIN" --admin-password "$AZ_SQL_ADMIN_PASSWORD"
+>>>>>>> origin/main
 
 echo "Creating SQL database $SQL_DB_NAME"
 az sql db create -g "$RG_NAME" -s "$SQL_SERVER_NAME" -n "$SQL_DB_NAME" --service-objective S0
 
+<<<<<<< HEAD
 echo "Creating Key Vault $KEY_VAULT_NAME"
 az keyvault create -n "$KEY_VAULT_NAME" -g "$RG_NAME" -l "$LOCATION" --enabled-for-template-deployment true
 
@@ -90,3 +122,9 @@ echo "Next steps:"
 echo "1. Push your code to GitHub"
 echo "2. Set up GitHub Actions for CI/CD"
 echo "3. Test the deployed application"
+=======
+echo "Enable managed identity for Web App"
+az webapp identity assign -g "$RG_NAME" -n "$APP_NAME"
+
+echo "Done. Next steps: configure Key Vault, store SQL password as secret, set connection string in App Settings, and deploy application code."
+>>>>>>> origin/main

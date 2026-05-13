@@ -4,11 +4,14 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+<<<<<<< HEAD
 
 ### Added
 - Created the `roagnote` branch to begin development on mobile companion features.
 - Integrated the system architecture diagram (`architecture.png`) into the `diagram/` folder.
 
+=======
+>>>>>>> origin/main
 ### Added
 - Azure deployment scaffolding and documentation
 - App Router shell for the Next.js timer app
@@ -63,4 +66,8 @@ All notable changes to this project will be documented in this file.
 - `GitHub` - Initial repository scaffolding and templates
 - `focusBreaker` - Initial timer app structure under `fB_web/`
 
+<<<<<<< HEAD
 ---
+=======
+---
+>>>>>>> origin/main
