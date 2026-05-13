@@ -3,9 +3,9 @@
 This folder contains the Bicep deployment scaffold for focusBreaker.
 
 Planned deployment flow
-1. Set `SQL_ADMIN_PASSWORD` in your shell.
-2. Deploy `main.bicep` with `main.bicepparam` at subscription scope.
-3. Let the Bicep template create the resource group and app resources.
+1. Use the Bicep files as the infrastructure source of truth.
+2. Create the Azure resource group and app resources through the Azure Portal or a deployment experience that supports Bicep.
+3. Configure the Web App settings for Azure SQL and Application Insights.
 4. Use the deployment outputs to confirm the web app URL and resource names.
 
 Bicep files
@@ -21,15 +21,17 @@ Database design
 
 Security notes
 - Do not hardcode passwords in the repository.
-- Use the `SQL_ADMIN_PASSWORD` environment variable when deploying Bicep.
+- Keep the SQL administrator password outside the repository.
 - Prefer Managed Identity over shared keys wherever possible.
 
 How to deploy
-```powershell
-$env:SQL_ADMIN_PASSWORD = '<your-strong-password>'
-Set-Location 'D:\Juliet S. Pontanares\Documents\3rd Year\CC\focusBreaker_mobileCompanion\fB_web'
-& 'C:\Program Files\nodejs\corepack.cmd' pnpm exec az deployment sub create --location eastus --template-file deployment/main.bicep --parameters @deployment/main.bicepparam --parameters sqlAdminPassword=$env:SQL_ADMIN_PASSWORD
-```
+
+1. Open the Azure Portal.
+2. Create or select the target resource group.
+3. Use the Bicep template in `main.bicep` as the provisioning reference.
+4. Create the matching App Service, SQL, Storage, Key Vault, and Application Insights resources.
+5. Add the needed app settings in the Web App configuration.
+6. Publish the app through the GitHub Actions workflow in `.github/workflows/deploy.yml`.
 
 Files in this folder
 - `main.bicep` - Bicep entrypoint.
@@ -38,3 +40,6 @@ Files in this folder
 - `database-schema.sql` - Azure SQL schema for the timer app.
 - `api-flow.md` - request/response flow for the timer API.
 - `credentials.md` - list of required secrets and how to obtain them.
+
+Related workflow
+- `.github/workflows/deploy.yml` - publishes the Next.js app to Azure Web App from the `fB_web` directory.

@@ -78,7 +78,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
     }
   }, [state.isRunning])
 
-  const playNotification = () => {
+  const playNotification = useCallback(() => {
     if (state.settings.soundEnabled) {
       const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)()
       const oscillator = audioContext.createOscillator()
@@ -101,9 +101,9 @@ export function TimerProvider({ children }: { children: ReactNode }) {
         icon: '/icon.png',
       })
     }
-  }
+  }, [state.currentMode, state.settings.notificationEnabled, state.settings.soundEnabled])
 
-  const handleSessionComplete = (prevState: TimerState): TimerState => {
+  const handleSessionComplete = useCallback((prevState: TimerState): TimerState => {
     const session: TimerSession = {
       id: `${Date.now()}`,
       mode: prevState.currentMode,
@@ -154,7 +154,7 @@ export function TimerProvider({ children }: { children: ReactNode }) {
       isRunning: prevState.settings.autoStartNextSession,
       currentSession: session,
     }
-  }
+  }, [state.settings.autoStartNextSession, state.settings.longBreak, state.settings.sessionsBeforeLongBreak, state.settings.shortBreak, state.settings.workDuration])
 
   const startTimer = () => {
     setState((prev: TimerState) => ({ ...prev, isRunning: true }))
