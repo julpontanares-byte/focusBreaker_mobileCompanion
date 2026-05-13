@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 ## [Unreleased]
 
+
+### Added
+- Created the `roagnote` branch to begin development on mobile companion features.
+- Integrated the system architecture diagram (`architecture.png`) into the `diagram/` folder.
+- Documented the **Data Persistence Layer** within the system architecture for technical consistency.
+
+### Changed
+- Reorganized the project root to fix nested folder issues and ensure core directories are tracked at the top level.
+
 ### Added
 - Azure deployment scaffolding and documentation
 - App Router shell for the Next.js timer app
