@@ -15,21 +15,21 @@ export default function HistoryPage() {
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
+    const loadSessions = async () => {
+      const snapshot = await fetchTimerSnapshot()
+      const allSessions = snapshot?.sessions ?? TimerStorageManager.getSessions()
+
+      if (filter === 'today') {
+        const today = new Date().toDateString()
+        setSessions(allSessions.filter((s) => new Date(s.startTime).toDateString() === today).reverse())
+      } else {
+        setSessions(allSessions.reverse())
+      }
+    }
+
     setMounted(true)
     void loadSessions()
   }, [filter])
-
-  const loadSessions = async () => {
-    const snapshot = await fetchTimerSnapshot()
-    const allSessions = snapshot?.sessions ?? TimerStorageManager.getSessions()
-
-    if (filter === 'today') {
-      const today = new Date().toDateString()
-      setSessions(allSessions.filter((s) => new Date(s.startTime).toDateString() === today).reverse())
-    } else {
-      setSessions(allSessions.reverse())
-    }
-  }
 
   const handleDelete = (sessionId: string) => {
     TimerStorageManager.deleteSession(sessionId)
