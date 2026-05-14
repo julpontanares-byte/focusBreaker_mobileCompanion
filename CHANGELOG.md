@@ -6,9 +6,11 @@ All notable changes to this project will be documented in this file.
 
 <<<<<<< HEAD
 
+## [2026-05-14] - Architecture Documentation & Diagrams
+
 ### Added
-- Created the `roagnote` branch to begin development on mobile companion features.
-- Integrated the system architecture diagram (`architecture.png`) into the `diagram/` folder.
+- [Agnote] Exported and committed the high-resolution Baseline and Optimized architecture diagrams.
+- [Agnote] Finalized the `diagram/architecture.md` technical documentation including security boundary definitions.
 
 =======
 >>>>>>> origin/main
